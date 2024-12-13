@@ -1,8 +1,20 @@
+import { useDispatch, useSelector } from "react-redux";
 import ChartBar from "../components/ChartBar";
 import ChartLine from "../components/ChartLine";
 import ChartPie from "../components/ChartPie";
+import { AppDispatch, RootState } from "../store";
+import { useEffect } from "react";
+import { fetchUsers } from "../actions/userActions";
 
 const DashboardPage = () => {
+  const { userList, deletedUser } = useSelector((state: RootState) => state);
+  const activeUser = userList.filter((user) => user.status === true);
+  const inActiveUser = userList.filter((user) => user.status === false);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    //@ts-ignore
+    dispatch(fetchUsers());
+  }, []);
   return (
     <div className="p-2 container-lg">
       <div className="flex flex-wrap gap-2">
@@ -10,7 +22,7 @@ const DashboardPage = () => {
           <h1 className="font-semibold text-lg md:text-xl">
             Total Users:{" "}
             <span className="font-bold text-xl md:text-3xl text-primary">
-              100
+              {userList.length}
             </span>{" "}
           </h1>
         </div>
@@ -18,7 +30,7 @@ const DashboardPage = () => {
           <h1 className="font-semibold text-lg md:text-xl">
             Active Users:{" "}
             <span className="font-bold text-xl md:text-3xl text-green-500">
-              100
+              {activeUser.length}
             </span>{" "}
           </h1>
         </div>
@@ -26,7 +38,7 @@ const DashboardPage = () => {
           <h1 className="font-semibold text-lg md:text-xl">
             InActive Users:{" "}
             <span className="font-bold text-xl md:text-3xl text-red-500">
-              100
+              {inActiveUser.length}
             </span>{" "}
           </h1>
         </div>
@@ -34,7 +46,7 @@ const DashboardPage = () => {
           <h1 className="font-semibold text-lg md:text-xl">
             Deleted Users:{" "}
             <span className="font-bold text-xl md:text-3xl text-yellow-500">
-              100
+              {deletedUser}
             </span>{" "}
           </h1>
         </div>

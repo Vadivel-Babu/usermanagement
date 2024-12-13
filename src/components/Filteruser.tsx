@@ -1,6 +1,11 @@
 import { Input, Select, SelectItem } from "@nextui-org/react";
 
-const Filteruser = () => {
+type Props = {
+  handleFilter: (e: any) => void;
+  handleQuery: (e: any) => void;
+};
+
+const Filteruser = ({ handleFilter, handleQuery }: Props) => {
   const statuses = [
     { key: "all", label: "All" },
     { key: "active", label: "Active" },
@@ -14,8 +19,13 @@ const Filteruser = () => {
           type="email"
           className="w-[200px]"
           placeholder="Search by name"
+          onChange={(e) => handleQuery(e.target.value)}
         />
-        <Select className="w-[200px]" label="Filter By user status">
+        <Select
+          onSelectionChange={(e) => handleFilter(e.currentKey)}
+          className="w-[200px]"
+          label="Filter By user status"
+        >
           {statuses.map((status) => (
             <SelectItem key={status.key}>{status.label}</SelectItem>
           ))}

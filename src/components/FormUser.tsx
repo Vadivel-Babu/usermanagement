@@ -4,17 +4,34 @@ import {
   Input,
   Select,
   SelectItem,
+  Spinner,
   Switch,
 } from "@nextui-org/react";
-import { CalendarDate } from "@internationalized/date";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../types/user";
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, updateUser } from "../actions/userActions";
+import { AppDispatch, RootState } from "../store";
+import { useNavigate, useParams } from "react-router-dom";
 
-const FormUser = () => {
-  const [data, setData] = useState<User | null>(null);
+type Props = {
+  type: "edit" | "create";
+  id?: string;
+};
+
+const FormUser = ({ type }: Props) => {
+  const { id: userid } = useParams();
+  const [data, setData] = useState<User>({
+    name: "",
+    email: "",
+    region: "",
+    status: false,
+    date: "",
+  });
+  const { isLoading, userList } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const statuses = [
-    { key: "all", label: "All" },
     { key: "asia", label: "Asia" },
     { key: "africa", label: "Africa" },
     { key: "america", label: "America" },
@@ -26,40 +43,68 @@ const FormUser = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   }
 
-  //validate the data
-  function validate() {
-    if (data?.name?.trim().length === 0) {
-      toast.error("Enter the name");
-      return false;
-    }
-  }
-
   //dispatch new user
   function handleAddUser(e: { preventDefault: () => void }) {
     e.preventDefault();
-    console.log("hi");
 
     const user = data;
-    console.log(user);
+    //@ts-ignore
+    dispatch(addUser(user));
+    navigate(-1);
+    setData({
+      name: "",
+      email: "",
+      region: "",
+      status: false,
+      date: "",
+    });
   }
+
+  function handleUpdateUser(e: { preventDefault: () => void }) {
+    e.preventDefault();
+
+    const user = { id: userid, ...data };
+    //@ts-ignore
+    dispatch(updateUser(user));
+    navigate(-1);
+    setData({
+      name: "",
+      email: "",
+      region: "",
+      status: false,
+      date: "",
+    });
+  }
+  useEffect(() => {
+    const user = userList.find((user: User) => user.id === userid);
+    if (type === "edit") {
+      setData({
+        name: user?.name,
+        email: user?.email,
+        region: user?.region,
+        status: user?.status,
+        date: user?.date,
+      });
+      console.log(user);
+    }
+  }, []);
   return (
-    <form
-      action=""
-      className="p-3 space-y-2 shadow-xl rounded-lg w-[300px] sm:w-[400px]"
-    >
+    <form className="p-3 space-y-2 shadow-xl rounded-lg w-[300px] sm:w-[400px]">
       <Input
         type="text"
-        name="Name"
-        value={data?.name}
+        name="name"
+        value={data?.name || ""}
         onChange={handleChange}
         placeholder="Enter the user name"
       />
       <Input
         type="email"
         onChange={handleChange}
-        name="Email"
+        name="email"
         placeholder="Enter the user email"
+        value={data?.email || ""}
       />
+      {type === "edit" && <p>Selected Region: {data.region}</p>}
       <Select
         onSelectionChange={(e) => setData({ ...data, region: e.currentKey })}
         className="w-[200px]"
@@ -70,6 +115,7 @@ const FormUser = () => {
           <SelectItem key={status.key}>{status.label}</SelectItem>
         ))}
       </Select>
+      {type === "edit" && <p>Date: {data.date}</p>}
       <DateInput
         label="Registered date"
         labelPlacement={"inside"}
@@ -89,12 +135,20 @@ const FormUser = () => {
         user status
       </Switch>
       <div className="w-full flex justify-between">
-        <Button color="danger">Cancel</Button>
+        <Button onPress={() => navigate(-1)} color="danger">
+          Cancel
+        </Button>
         <button
-          onClick={handleAddUser}
+          onClick={type === "edit" ? handleUpdateUser : handleAddUser}
           className="bg-primary text-white rounded-lg px-3 py-1"
         >
-          Add User
+          {isLoading ? (
+            <Spinner color="secondary" />
+          ) : type === "edit" ? (
+            "Update User"
+          ) : (
+            "Add User"
+          )}
         </button>
       </div>
     </form>

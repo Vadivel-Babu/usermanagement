@@ -6,10 +6,24 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { Button, Chip, Pagination } from "@nextui-org/react";
+import {
+  Chip,
+  Pagination,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../store";
+import { useDispatch } from "react-redux";
+import { User } from "../types/user";
+import { handleUser } from "../slices/userSlice";
+import SingleUser from "./SingleUser";
 
 const columns: any[] = [
   {
@@ -30,8 +44,15 @@ const columns: any[] = [
   },
 ];
 
-const Usertable = ({ data: users }: { data: any }) => {
+type Props = {
+  data: User[];
+  handleDelete: (id: string) => void;
+};
+
+const Usertable = ({ data: users, handleDelete }: Props) => {
   const [current, setCurrent] = useState(1);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   return (
     <div className="max-w-[500px] mx-auto">
@@ -47,12 +68,21 @@ const Usertable = ({ data: users }: { data: any }) => {
               <TableCell>{user?.name}</TableCell>
               <TableCell>CEO</TableCell>
               <TableCell>
-                <Chip color="success" className="text-white" size="sm">
-                  active
+                <Chip
+                  color={user?.status ? "success" : "danger"}
+                  className="text-white"
+                  size="sm"
+                >
+                  {user?.status ? "Active" : "Inactive"}
                 </Chip>
               </TableCell>
               <TableCell className="space-x-1">
-                <Button size="sm" isIconOnly color="danger">
+                <Button
+                  size="sm"
+                  isIconOnly
+                  color="danger"
+                  onPress={() => handleDelete(user?.id)}
+                >
                   <Icon icon={"mdi:trash-can-empty"} />
                 </Button>
                 <Button
@@ -63,7 +93,15 @@ const Usertable = ({ data: users }: { data: any }) => {
                 >
                   <Icon icon={"mdi:edit"} />
                 </Button>
-                <Button size="sm" isIconOnly color="primary">
+                <Button
+                  onPress={() => {
+                    dispatch(handleUser(user));
+                    onOpen();
+                  }}
+                  size={"sm"}
+                  isIconOnly
+                  color="primary"
+                >
                   <Icon icon={"mdi:eye-circle"} />
                 </Button>
               </TableCell>
@@ -78,6 +116,14 @@ const Usertable = ({ data: users }: { data: any }) => {
         total={Math.ceil(users?.length / 5)}
         onChange={(p: number) => setCurrent(p)}
       />
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">User Detail</ModalHeader>
+          <ModalBody>
+            <SingleUser />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

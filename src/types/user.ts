@@ -4,5 +4,5 @@ export interface User {
   email?: string;
   status?: boolean;
   region?: string;
-  date?: Date | string;
+  date?: string;
 }

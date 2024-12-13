@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import {
   BarChart,
   Bar,
@@ -9,19 +10,29 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { RootState } from "../store";
 
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-];
 const ChartBar = () => {
+  const { userList } = useSelector((state: RootState) => state);
+
+  const africa = userList.filter((user) => user.region === "africa").length;
+  const america = userList.filter((user) => user.region === "america").length;
+  const asia = userList.filter((user) => user.region === "asia").length;
+  const europe = userList.filter((user) => user.region === "europe").length;
+  const data = [
+    {
+      name: "Region",
+      africa: africa,
+      america: america,
+      asia: asia,
+      europe,
+    },
+  ];
   return (
     <div className="w-[300px] h-[250px] md:mt-2">
-      <p>barchart</p>
+      <p className="font-bold text-primary text-center">
+        Users Based on Region
+      </p>
       <ResponsiveContainer width="100%" height={"100%"}>
         <BarChart
           data={data}
@@ -38,13 +49,23 @@ const ChartBar = () => {
           <Tooltip />
           <Legend />
           <Bar
-            dataKey="pv"
+            dataKey="africa"
             fill="#8884d8"
             activeBar={<Rectangle fill="pink" stroke="blue" />}
           />
           <Bar
-            dataKey="uv"
+            dataKey="america"
             fill="#82ca9d"
+            activeBar={<Rectangle fill="gold" stroke="purple" />}
+          />
+          <Bar
+            dataKey="asia"
+            fill="red"
+            activeBar={<Rectangle fill="gold" stroke="purple" />}
+          />
+          <Bar
+            dataKey="europe"
+            fill="#9534eb"
             activeBar={<Rectangle fill="gold" stroke="purple" />}
           />
         </BarChart>
