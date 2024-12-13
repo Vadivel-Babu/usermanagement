@@ -5,15 +5,17 @@ import { RootState } from "../store";
 //import { User } from "../types/user";
 import { useEffect } from "react";
 
-import { Spinner } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { fetchUsers } from "../actions/userActions";
+import { useNavigate } from "react-router-dom";
 
 const UserPage = () => {
   const { userList, isLoading, error } = useSelector(
     (state: RootState) => state
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     //@ts-ignore
@@ -26,6 +28,13 @@ const UserPage = () => {
   return (
     <div className="container-lg mx-auto md:my-auto space-y-2 p-3">
       <Filteruser />
+      <Button
+        onPress={() => navigate("/user/create")}
+        className="max-w mx-auto text-white"
+        color="primary"
+      >
+        Add New User
+      </Button>
       {isLoading ? (
         <div className="w-full mx-auto my-auto text-center mt-5">
           <Spinner />

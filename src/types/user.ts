@@ -1,7 +1,8 @@
 export interface User {
-  id: number;
-  name: string;
-  email: string;
-  status: string;
-  region: string;
+  id?: number | string;
+  name?: string;
+  email?: string;
+  status?: boolean;
+  region?: string;
+  date?: Date | string;
 }

@@ -63,7 +63,7 @@ const Navbar = () => {
               className={`hover:text-secondary w-full md:text-2xl md:px-3 md:py-1 flex ${
                 minmize && "justify-center"
               } gap-2 ${
-                location.pathname === "/users"
+                location.pathname.includes("user")
                   ? "bg-mobile-gradient md:bg-gradient text-secondary   md:border-r-3 border-secondary"
                   : ""
               }`}

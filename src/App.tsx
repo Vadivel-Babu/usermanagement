@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DashboardPage from "./pages/DashboardPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import UserPage from "./pages/UserPage";
+import CreateuserPage from "./pages/CreateuserPage";
+import EdituserPage from "./pages/EdituserPage";
 
 function App() {
   return (
@@ -26,9 +28,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<DashboardPage />} />
-          <Route path="/task/edit/:id" element={"<EditTaskPage />"} />
+          <Route path="/user/edit/:id" element={<EdituserPage />} />
           <Route path="/users" element={<UserPage />} />
-          <Route path="/user/:id" element={"<TaskPage />"} />
+          <Route path="/user/create" element={<CreateuserPage />} />
           <Route path="/analytic" element={<AnalyticsPage />} />
           <Route
             path="*"

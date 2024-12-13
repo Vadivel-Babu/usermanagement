@@ -9,6 +9,7 @@ import {
 import { Button, Chip, Pagination } from "@nextui-org/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns: any[] = [
   {
@@ -31,6 +32,7 @@ const columns: any[] = [
 
 const Usertable = ({ data: users }: { data: any }) => {
   const [current, setCurrent] = useState(1);
+  const navigate = useNavigate();
   return (
     <div className="max-w-[500px] mx-auto">
       <Table aria-label="Example table with dynamic content">
@@ -41,7 +43,7 @@ const Usertable = ({ data: users }: { data: any }) => {
         </TableHeader>
         <TableBody>
           {users.slice((current - 1) * 5, current * 5).map((user: any) => (
-            <TableRow key={user.id}>
+            <TableRow key={user?.id}>
               <TableCell>{user?.name}</TableCell>
               <TableCell>CEO</TableCell>
               <TableCell>
@@ -53,7 +55,12 @@ const Usertable = ({ data: users }: { data: any }) => {
                 <Button size="sm" isIconOnly color="danger">
                   <Icon icon={"mdi:trash-can-empty"} />
                 </Button>
-                <Button size="sm" isIconOnly color="warning">
+                <Button
+                  onPress={() => navigate(`/user/edit/${user?.id}`)}
+                  size="sm"
+                  isIconOnly
+                  color="warning"
+                >
                   <Icon icon={"mdi:edit"} />
                 </Button>
                 <Button size="sm" isIconOnly color="primary">
@@ -68,7 +75,7 @@ const Usertable = ({ data: users }: { data: any }) => {
         className="mt-3"
         color={"primary"}
         page={current}
-        total={Math.floor(users?.length / 5)}
+        total={Math.ceil(users?.length / 5)}
         onChange={(p: number) => setCurrent(p)}
       />
     </div>
