@@ -1,20 +1,43 @@
-# Task Management Web App
+Dynamic Dashboard Application
 
-This is a simple task management web application built using react,tailwind and redux. It allows users to create, delete, and mark task items as completed. The tasks are stored locally using the browser's localStorage feature, ensuring that users can access their task even after refreshing the page or closing the browser.
+This project is a dynamic dashboard application built using React.js, Redux, TypeScript, and Redux Thunk for API handling. It consists of two main sections: the User Management Dashboard and the Analytics Dashboard.
 
-## Features
+Features
 
-- Add Task: Users can add new task items to the list by entering a task and pressing the "Add" button.
-- Delete Task: Users can delete task items by clicking on the delete button next to each item.
-- Mark as Completed: Users can mark task items as completed by clicking on the checkbox next to each item.
-- LocalStorage: task items are stored locally using the browser's localStorage feature, allowing users to persist their tasks across sessions.
-- Search and filter: user can seach the task by title and filter it based on their status.
-- Drag and drop: user can reorder their task list.
+1. User Management Dashboard
 
-## Usage
+Login Page: Authenticate users using a mock API.
 
-- Clone the repository to your local machine.
-- run the command in terminal npm i then npm run dev.
-- Use the input field to add new task items.
-- Click on the delete button to remove task items.
-- Click on the checkbox to mark task items as completed.
+User Table: Display a paginated list of users with the ability to:
+
+View user details.
+
+Delete users.
+
+Search and Filter: Filter users by name or email.
+
+Pagination: Display 5 users per page.
+
+2. Analytics Dashboard
+
+Overview Cards:
+
+Total Users: Total count of all fetched users.
+
+Active Users: Mock calculation based on the status field.
+
+Deleted Users: Track the count of deleted users during the session.
+
+Charts Section:
+
+User Registration Trend: A line chart showing user registrations over the past 6 months.
+
+Active vs Inactive Users: A pie chart comparing active and inactive users.
+
+Users by Region: A bar chart displaying user distribution by regions.
+
+Filters for Analytics:
+
+Filter data by date range.
+
+Filter data by region.
