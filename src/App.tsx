@@ -1,17 +1,22 @@
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashboardPage from "./pages/DashboardPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
+
 import UserPage from "./pages/UserPage";
 import CreateuserPage from "./pages/CreateuserPage";
 import EdituserPage from "./pages/EdituserPage";
+import LoginForm from "./components/LoginForm";
+import AuthUser from "./Authuser";
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
 
 function App() {
+  const { user } = useContext(AppContext);
   return (
-    <BrowserRouter>
+    <>
       <ToastContainer
         position="top-center"
         autoClose={3000}
@@ -25,13 +30,55 @@ function App() {
         theme="dark"
       />
       <div className="md:flex gap-3">
-        <Navbar />
+        {user ? <Navbar /> : null}
+        {/* <AuthUser>
+          <Navbar />
+        </AuthUser> */}
+
         <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/user/edit/:id" element={<EdituserPage />} />
-          <Route path="/users" element={<UserPage />} />
-          <Route path="/user/create" element={<CreateuserPage />} />
-          <Route path="/analytic" element={<AnalyticsPage />} />
+          <Route
+            path="/"
+            element={
+              <AuthUser>
+                {" "}
+                <DashboardPage />
+              </AuthUser>
+            }
+          />
+          <Route
+            path="/user/edit/:id"
+            element={
+              <AuthUser>
+                {" "}
+                <EdituserPage />{" "}
+              </AuthUser>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <AuthUser>
+                <UserPage />{" "}
+              </AuthUser>
+            }
+          />
+          <Route
+            path="/user/create"
+            element={
+              <AuthUser>
+                <CreateuserPage />{" "}
+              </AuthUser>
+            }
+          />
+
+          <Route
+            path="/login"
+            element={
+              <AuthUser>
+                <LoginForm />{" "}
+              </AuthUser>
+            }
+          />
           <Route
             path="*"
             element={
@@ -45,7 +92,7 @@ function App() {
           />
         </Routes>
       </div>
-    </BrowserRouter>
+    </>
   );
 }
 

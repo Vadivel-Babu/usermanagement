@@ -29,18 +29,11 @@ const Menu = ({ isOpen, onOpenChange }: Props) => {
                 Dashboard
               </NavLink>
               <NavLink
-                to={"/"}
+                to={"/user"}
                 className={"text-secondary hover:text-light-secondary"}
                 onClick={onClose}
               >
-                Dashboard
-              </NavLink>
-              <NavLink
-                to={"/"}
-                className={"text-secondary hover:text-light-secondary"}
-                onClick={onClose}
-              >
-                Dashboard
+                User
               </NavLink>
             </DrawerBody>
           </>

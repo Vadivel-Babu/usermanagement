@@ -1,13 +1,17 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Avatar, Button, useDisclosure } from "@nextui-org/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Menu from "./Menu";
+import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
   const location = useLocation();
   const [minmize, setMinimize] = useState<boolean>(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  //@ts-ignore
+  const { logout } = useContext(AppContext);
+
   return (
     <div className="bg-primary md:h-screen text-white md:w-max transition md:rounded-r-xl">
       <div className="flex md:flex-col justify-between h-full">
@@ -38,24 +42,6 @@ const Navbar = () => {
 
               <p className={` ${minmize ? "md:hidden" : "md:inline-block"}`}>
                 Dashboard
-              </p>
-            </NavLink>
-            <NavLink
-              to="/analytic"
-              className={`hover:text-secondary w-full md:text-2xl md:px-3 md:py-1  flex ${
-                minmize && "justify-center"
-              } gap-2 ${
-                location.pathname === "/analytic"
-                  ? "md:bg-gradient text-secondary md:border-r-3 md:border-secondary"
-                  : ""
-              }`}
-            >
-              <span>
-                <Icon icon="charm:chart-line" fontSize={25} />
-              </span>
-
-              <p className={` ${minmize ? "md:hidden" : "md:inline-block"}`}>
-                Analytics
               </p>
             </NavLink>
             <NavLink
@@ -91,6 +77,7 @@ const Navbar = () => {
             isIconOnly={minmize}
             disableRipple
             className="bg-my-gradient sm:text-sm"
+            onPress={logout}
           >
             {minmize ? (
               <Icon icon={"material-symbols:logout"} fontSize={20} />
