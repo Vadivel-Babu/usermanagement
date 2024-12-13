@@ -13,7 +13,7 @@ const Navbar = () => {
   const { logout } = useContext(AppContext);
 
   return (
-    <div className="bg-primary md:h-screen text-white md:w-max transition md:rounded-r-xl">
+    <div className="bg-primary md:h-screen text-white md:w-max transition md:rounded-r-xl md:sticky md:top-0 md:bottom-0">
       <div className="flex md:flex-col justify-between h-full">
         <div className="flex md:flex-col items-center gap-6 md:items-start md:justify-center">
           <NavLink to="/">

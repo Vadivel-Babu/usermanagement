@@ -29,7 +29,7 @@ const ChartBar = () => {
     },
   ];
   return (
-    <div className="w-[300px] h-[250px] md:mt-2">
+    <div className="w-[300px] h-[250px] md:w-[400px] md:h-[350px] md:mt-2">
       <p className="font-bold text-primary text-center">
         Users Based on Region
       </p>
